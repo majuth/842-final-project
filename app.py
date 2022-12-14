@@ -2,10 +2,12 @@
 from flask import Flask, request, render_template
 import os
 import json
+from plotly import plotly
 from collections import defaultdict
 import math
 from porterStemming import PorterStemmer
 from bm25 import retrieve_docs
+
 
 # read in dataset
 with open('movies_metadata.json', 'r') as f:
@@ -43,6 +45,14 @@ def bm25():
             titles.append(corpus[docid]['title'])
             overviews.append(corpus[docid]['overview'][:300] + "...")
     lengthRange = range(0, num_results)
+
+    fig = plotly.graph_objs.Figure(data=[plotly.graph_objs.Scatter(
+    x=[1, 2, 3, 4], y=[10, 11, 12, 13],
+    mode='markers',
+    marker_size=[40, 60, 80, 100])
+    ])
+
+    fig.write_html("chart.html")
 
     return render_template('output.html', n=num_results, r=bm25_rankings, t=titles, o=overviews, l=lengthRange)
 
