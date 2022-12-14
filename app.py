@@ -2,7 +2,7 @@
 from flask import Flask, request, render_template
 import os
 import json
-from plotly import plotly
+from chart_studio import plotly
 from collections import defaultdict
 import math
 from porterStemming import PorterStemmer
