@@ -4,22 +4,31 @@
     <meta charset="UTF-8">
     <title>842 - Search Results</title>
 </head>
+
 <body>
+    <h1>BM25 Search Results</h1>
     <form action="/" method="post">
-    <button type="submit">Go Back</button>
+        <button type="submit">Go Back</button>
     </form>
-<h1>BM25 Search Results</h1>
+    <h4>Your Query: {{q}}</h4>
+    <div id='chart' class='chart'”></div>
+    <div id="output">
+        <h2>There are {{n}} results</h2>
 
-<div id="output">
-    <h2>There are {{n}} results</h2>
-
-    <ul>
-    {% for i in l %}
-  
-    <li>BM25 Ranking: {{r[i]}} <br> Title: {{t[i]}} <br> Overview: {{o[i]}}</li> <br>
-    {% endfor %}
-    </ul>
-</div>
+        <ul>
+        {% for i in l %}
+    
+        <li>BM25 Ranking: {{r[i]}} <br> Title: {{t[i]}} <br> Overview: {{o[i]}}</li> <br>
+        {% endfor %}
+        </ul>
+    </div>
 
 </body>
-</html> 
+
+<script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+<script type='text/javascript'>
+    var graphs = {{graph | safe}};
+    Plotly.plot('chart',graphs,{});
+</script>
+</html>
+

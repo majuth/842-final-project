@@ -2,12 +2,11 @@
 from flask import Flask, request, render_template
 import os
 import json
-from chart_studio import plotly
-from collections import defaultdict
-import math
 from porterStemming import PorterStemmer
-from bm25 import retrieve_docs
-
+from bm25 import retrieve_docs, retrieve_doc_freq
+import plotly
+import plotly.express as px
+import pandas as pd
 
 # read in dataset
 with open('movies_metadata.json', 'r') as f:
@@ -38,24 +37,41 @@ def bm25():
     titles = []
     overviews = []
     bm25_rankings = []
+    user_ratings = []
+    genres = []
+    document_freq = []
     for i in range (0, num_results):
         if rankings[i][1] > 0:
             bm25_rankings.append(rankings[i][1])
             docid = rankings[i][0]
             titles.append(corpus[docid]['title'])
             overviews.append(corpus[docid]['overview'][:300] + "...")
-    lengthRange = range(0, num_results)
+            user_ratings.append(float(corpus[docid]['user_rating']))
+            genre_dict = eval((corpus[docid]['genres']))
+            genres.append(genre_dict[0]['name'])
+            document_freq.append(retrieve_doc_freq(query_term_stemmed, docid))
+    length_range = range(0, num_results)
 
-    fig = plotly.graph_objs.Figure(data=[plotly.graph_objs.Scatter(
-    x=[1, 2, 3, 4], y=[10, 11, 12, 13],
-    mode='markers',
-    marker_size=[40, 60, 80, 100])
-    ])
+    zipped = list(zip(bm25_rankings, user_ratings, titles, genres, document_freq))
 
-    fig.write_html("chart.html")
+    df = pd.DataFrame(zipped, columns=['BM25_Ranking', 'User_Rating', 'Movie_Title', 'Genre', 'Document Frequency'])
 
-    return render_template('output.html', n=num_results, r=bm25_rankings, t=titles, o=overviews, l=lengthRange)
+    fig = px.scatter(df, x="BM25_Ranking", y="User_Rating", color="Genre", size="Document Frequency", hover_name="Movie_Title", log_x=True, size_max=30)
+    fig.update_layout(
+        yaxis=dict(
+            title_text = "User Rating",
+            tickvals=[4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10],
+        ),
+        xaxis=dict(
+            title_text = "BM25 Ranking"
+        ),
+    )
+
+    graph_json = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+
+    return render_template('output.html', q=query_term, n=num_results, r=bm25_rankings, t=titles, o=overviews, l=length_range, graph=graph_json)
 
 if __name__=='__main__':
     app.run(host=os.getenv('IP', '0.0.0.0'), 
-        port=int(os.getenv('PORT', 7777)))
+        port=int(os.getenv('PORT', 7777)), debug=True)
+    

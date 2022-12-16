@@ -89,6 +89,12 @@ def retrieve_docs(query, result_count):
             scores[document] = scores.get(document, 0) + (tf_idf[word][document] * get_query_tf_comp(0,word,query_tf)) #k3 = 0 (default)
     return sorted(scores.items(), key=lambda x : x[1], reverse=True)[:result_count]
 
+def retrieve_doc_freq(query, docid):
+    total_df=0
+    for term in query.split():
+        total_df+=(doc_contents[str(docid)].count(term))
+    return (total_df)
+
 # queryTerm = ""
 # while queryTerm != "ZZEND":
 #     queryTerm = input("Enter the term you are searching for: ")
@@ -105,6 +111,7 @@ def retrieve_docs(query, result_count):
 
 #     rankings = retrieve_docs(queryTerm_stemmed, 100000)
 #     print("There are %d results" %len(rankings))
+
 #     for i in range (0, len(rankings)):
 #         if rankings[i][1] > 0:
 #             print("BM25 Ranking: %f" %rankings[i][1])
@@ -114,4 +121,6 @@ def retrieve_docs(query, result_count):
 #             print(corpus[docID]['title'])
 #             print("Overview:")
 #             print(corpus[docID]['overview'][:300] + "...")
+#             print("Docment Frequency:")
+#             print(retrieve_doc_freq(queryTerm_stemmed, docID))
 #             print("\n")
