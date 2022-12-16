@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>842 - Search Results</title>
+</head>
+
+<body>
+    
+    <form action="/" method="post">
+        <button type="submit">Go Back</button>
+    </form>
+
+    <h3>Your Query: {{q}}</h3>
+
+    <div id="bm_output" style="width: 50%; height: 50%; float:left;">
+        <h1>BM25 Search Results</h1>
+        <div id='bm_chart' class='chart'”></div>
+        <h2>There are {{n}} results</h2>
+
+        <ul>
+        {% for i in l %}
+    
+        <li>BM25 Ranking: {{bm_r[i]}} <br> Title: {{t[i]}} <br> Overview: {{o[i]}}</li> <br>
+        {% endfor %}
+        </ul>
+    </div>
+
+    <div id="nb_output" style="width: 50%; height: 50%; float:right;">
+        <h1>Naive Bayes Search Results</h1>
+        <div id='nb_chart' class='chart'”></div>
+        <h2>There are {{n}} results</h2>
+
+        <ul>
+        {% for i in l %}
+    
+        <li>Naive Bayes Ranking: {{nb_r[i]}} <br> Title: {{t[i]}} <br> Overview: {{o[i]}}</li> <br>
+        {% endfor %}
+        </ul>
+    </div>
+
+</body>
+
+<script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+
+<script type='text/javascript'>
+    var graphs = {{bm_graph | safe}};
+    Plotly.plot('bm_chart',graphs,{});
+</script>
+
+<script type='text/javascript'>
+    var graphs = {{nb_graph | safe}};
+    Plotly.plot('nb_chart',graphs,{});
+</script>
+
+</html>

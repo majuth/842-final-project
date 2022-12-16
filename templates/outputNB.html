@@ -9,7 +9,7 @@
     <form action="/" method="post">
         <button type="submit">Go Back</button>
     </form>
-    <h1>BM25 Search Results</h1>
+    <h1>Naive Bayes Search Results</h1>
     <h4>Your Query: {{q}}</h4>
     <div id='chart' class='chart'”></div>
     <div id="output">
@@ -18,7 +18,7 @@
         <ul>
         {% for i in l %}
     
-        <li>BM25 Ranking: {{r[i]}} <br> Title: {{t[i]}} <br> Overview: {{o[i]}}</li> <br>
+        <li>Naive Bayes Ranking: {{r[i]}} <br> Title: {{t[i]}} <br> Overview: {{o[i]}}</li> <br>
         {% endfor %}
         </ul>
     </div>
@@ -30,4 +30,4 @@
     var graphs = {{graph | safe}};
     Plotly.plot('chart',graphs,{});
 </script>
-</html>
+</html> 
