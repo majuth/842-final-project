@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>842 - Search Results</title>
+</head>
+
+<body>
+    
+    <form action="/" method="post">
+        <button type="submit">Go Back</button>
+    </form>
+
+    <h1>BM25-CTF-Normalized Search Results</h1>
+    <h3>Your Query: {{q}}</h3>
+    <p><i>Hover over the points to view more details</i></p>
+    <div id='bm_ctf_norm_chart' class='chart'”></div>
+    <div id="output">
+        <h2>There are {{n}} results</h2>
+
+        <ul>
+        {% for i in l %}
+    
+        <li>BM25-CTF-Normalized Ranking: {{r[i]}} <br> Title: {{t[i]}} <br> Overview: {{o[i]}}</li> <br>
+        {% endfor %}
+        </ul>
+    </div>
+
+</body>
+
+<script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+
+<script type='text/javascript'>
+    var graphs = {{graph_ctf_norm | safe}};
+    Plotly.plot('bm_ctf_norm_chart',graphs,{});
+</script>
+
+</html>

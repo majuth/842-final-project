@@ -12,33 +12,23 @@
     </form>
 
     <h3>Your Query: {{q}}</h3>
+    <p><i>Hover over the points to view more details</i></p>
 
-    <div id="bm_output" style="width: 50%; height: 50%; float:left;">
-        <h1>BM25 Search Results</h1>
-        <div id='bm_chart' class='chart'”></div>
-        <h2>There are {{n}} results</h2>
-
-        <ul>
-        {% for i in l %}
+    <h1>BM25-Normalized Search Results</h1>
+    <p>Note: BM25 results have also been normalized to allow ease of comparison with the baseline model</p>
+    <h4>There are {{n}} results</h4>
+    <div id='bm_chart' class='chart'”></div>
     
-        <li>BM25 Ranking: {{bm_r[i]}} <br> Title: {{t[i]}} <br> Overview: {{o[i]}}</li> <br>
-        {% endfor %}
-        </ul>
-    </div>
 
-    <div id="nb_output" style="width: 50%; height: 50%; float:right;">
-        <h1>Naive Bayes Search Results</h1>
-        <div id='nb_chart' class='chart'”></div>
-        <h2>There are {{n}} results</h2>
-
-        <ul>
-        {% for i in l %}
+    <h1>BM25-CTF-Normalized Search Results</h1>
+    <h4>There are {{n}} results</h4>
+    <div id='bm_ctf_chart' class='chart'”></div>
     
-        <li>Naive Bayes Ranking: {{nb_r[i]}} <br> Title: {{t[i]}} <br> Overview: {{o[i]}}</li> <br>
-        {% endfor %}
-        </ul>
-    </div>
 
+    <h1>Naive Bayes Search Results</h1>
+    <h4>There are {{n}} results</h4>
+    <div id='nb_chart' class='chart'”></div>
+    
 </body>
 
 <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
@@ -46,6 +36,11 @@
 <script type='text/javascript'>
     var graphs = {{bm_graph | safe}};
     Plotly.plot('bm_chart',graphs,{});
+</script>
+
+<script type='text/javascript'>
+    var graphs = {{bm_ctf_graph | safe}};
+    Plotly.plot('bm_ctf_chart',graphs,{});
 </script>
 
 <script type='text/javascript'>

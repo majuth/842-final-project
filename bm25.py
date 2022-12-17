@@ -72,7 +72,6 @@ def create_tf_idf(k1, b):
     return tf_idf
 
 
-
 def get_query_tf_comp(k3, term, query_tf):
     return ((k3+1)*query_tf[term])/(k3 + query_tf[term])
 

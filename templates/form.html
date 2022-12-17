@@ -4,26 +4,37 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>842 - A2</title>
+    <title>842 - Final Project</title>
 </head>
 <body>
-    <h2>CPS 842 - Final Project</h2>
+    <h1>CPS 842 - Final Project</h1>
+    <h2>SE Prototype for Movies Dataset with Visualization</h2>
     <h3>By: Sakshi Padhiar & Majuth Kirakalprathapan</h3>
+    <h4>BM25-CTF-Normalized Search (Baseline Model)</h4>
+    <p>The baseline model builds on BM25 by taking collection term frequency (CTF) into account. The rankings are also normalized. This search returns all relevant results sorted by highest ranking to lowest. It displays details such as Movie Title, Movie Overview, Genres and User Rating.</p>
+    <form action="bm25_ctf_normalized" method="post">
+        <label for="query">Movies: </label>
+        <input type="text" id="query" name="user_query" placeholder="Search for movies">
+    <button type="submit">BM25-CTF-Normalized Search</button>
+    </form>
     <h4>BM25 Search</h4>
+    <p>The BM25 search returns all relevant results sorted by highest ranking to lowest. It displays details such as Movie Title, Movie Overview, Genres and User Rating.</p>
     <form action="bm25" method="post">
-        <label for="query">Movies</label>
+        <label for="query">Movies: </label>
         <input type="text" id="query" name="user_query" placeholder="Search for movies">
     <button type="submit">BM25 Search</button>
     </form>
     <h4>Naive Bayes Search</h4>
+    <p>The Naive Bayes search returns all relevant results sorted by highest ranking to lowest. It displays details such as Movie Title, Movie Overview, Genres and User Rating.</p>
     <form action="naivebayes" method="post">
-        <label for="query">Movies</label>
+        <label for="query">Movies: </label>
         <input type="text" id="query" name="user_query" placeholder="Search for movies">
     <button type="submit">Naive Bayes Search</button>
     </form>
-    <h4>Compare BM25 and Naive Bayes</h4>
+    <h4>Compare All</h4>
+    <p>This search displays visualizations for all 3 models (Baseline, BM25 and Naive Bayes) allowing them to be visually compared.</p>
     <form action="compare" method="post">
-        <label for="query">Movies</label>
+        <label for="query">Movies: </label>
         <input type="text" id="query" name="user_query" placeholder="Search for movies">
     <button type="submit">Compare</button>
     </form>
