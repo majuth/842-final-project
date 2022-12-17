@@ -52,15 +52,15 @@ for docid, terms in doc_contents.items():
         inverted_index[term].add(docid)
 
 def tf_idf_score(k1, b, term, docid):
-    # get term frequency by counting length of inverted index
-    tf = len(inverted_index[term.lower()])
+    # get document frequency by counting length of inverted index
+    doc_freq = len(inverted_index[term.lower()])
 
-    # get document frequency by counting number of times term appears in given doc
-    df = doc_contents[str(docid)].count(term)
+    # get term frequency by counting number of times term appears in given doc
+    term_freq = doc_contents[str(docid)].count(term)
 
     # calculate td-idf score
-    idf_comp = math.log((NUM_OF_DOCS - tf + 0.5)/(tf+0.5))
-    tf_comp = ((k1 + 1)*df)/(k1*((1-b) + b*(len(list(filter(None, doc_contents[str(docid)])))/AVG_LEN_DOCS))+df)
+    idf_comp = math.log((NUM_OF_DOCS - doc_freq + 0.5)/(doc_freq+0.5))
+    tf_comp = ((k1 + 1)*term_freq)/(k1*((1-b) + b*(len(list(filter(None, doc_contents[str(docid)])))/AVG_LEN_DOCS))+term_freq)
     return idf_comp * tf_comp
 
 # creates a matrix for all terms
@@ -89,11 +89,11 @@ def retrieve_docs(query, result_count):
             scores[document] = scores.get(document, 0) + (tf_idf[word][document] * get_query_tf_comp(0,word,query_tf)) #k3 = 0 (default)
     return sorted(scores.items(), key=lambda x : x[1], reverse=True)[:result_count]
 
-def retrieve_doc_freq(query, docid):
-    total_df=0
+def retrieve_term_freq(query, docid):
+    total_tf=0
     for term in query.split():
-        total_df+=(doc_contents[str(docid)].count(term))
-    return (total_df)
+        total_tf+=(doc_contents[str(docid)].count(term))
+    return (total_tf)
 
 # queryTerm = ""
 # while queryTerm != "ZZEND":
@@ -122,5 +122,5 @@ def retrieve_doc_freq(query, docid):
 #             print("Overview:")
 #             print(corpus[docID]['overview'][:300] + "...")
 #             print("Docment Frequency:")
-#             print(retrieve_doc_freq(queryTerm_stemmed, docID))
+#             print(retrieve_term_freq(queryTerm_stemmed, docID))
 #             print("\n")

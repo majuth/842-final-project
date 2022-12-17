@@ -3,7 +3,7 @@ from flask import Flask, request, render_template
 import os
 import json
 from porterStemming import PorterStemmer
-from bm25 import retrieve_docs, retrieve_doc_freq
+from bm25 import retrieve_docs, retrieve_term_freq
 from naiveBayes import retrieve_docsNB
 import plotly
 import plotly.express as px
@@ -40,7 +40,7 @@ def bm25():
     bm25_rankings = []
     user_ratings = []
     genres = []
-    document_freq = []
+    tf = []
     for i in range (0, num_results):
         if rankings[i][1] > 0:
             bm25_rankings.append(rankings[i][1])
@@ -50,14 +50,14 @@ def bm25():
             user_ratings.append(float(corpus[docid]['user_rating']))
             genre_dict = eval((corpus[docid]['genres']))
             genres.append(genre_dict[0]['name'])
-            document_freq.append(retrieve_doc_freq(query_term_stemmed, docid))
+            tf.append(retrieve_term_freq(query_term_stemmed, docid))
     length_range = range(0, num_results)
 
-    zipped = list(zip(bm25_rankings, user_ratings, titles, genres, document_freq))
+    zipped = list(zip(bm25_rankings, user_ratings, titles, genres, tf))
 
-    df = pd.DataFrame(zipped, columns=['BM25_Ranking', 'User_Rating', 'Movie_Title', 'Genre', 'Document Frequency'])
+    df = pd.DataFrame(zipped, columns=['BM25_Ranking', 'User_Rating', 'Movie_Title', 'Genre', 'Term Frequency'])
 
-    fig = px.scatter(df, x="BM25_Ranking", y="User_Rating", color="Genre", size="Document Frequency", hover_name="Movie_Title", log_x=True, size_max=30)
+    fig = px.scatter(df, x="BM25_Ranking", y="User_Rating", color="Genre", size="Term Frequency", hover_name="Movie_Title", log_x=True, size_max=30)
     fig.update_layout(
         yaxis=dict(
             title_text = "User Rating",
@@ -90,7 +90,7 @@ def naivebayes():
     nb_rankings = []
     user_ratings = []
     genres = []
-    document_freq = []
+    tf = []
     for i in range (0, num_results):
         if rankings[i][1] > 0:
             nb_rankings.append(rankings[i][1])
@@ -100,14 +100,14 @@ def naivebayes():
             user_ratings.append(float(corpus[docid]['user_rating']))
             genre_dict = eval((corpus[docid]['genres']))
             genres.append(genre_dict[0]['name'])
-            document_freq.append(retrieve_doc_freq(query_term_stemmed, docid))
+            tf.append(retrieve_term_freq(query_term_stemmed, docid))
     length_range = range(0, num_results)
 
-    zipped = list(zip(nb_rankings, user_ratings, titles, genres, document_freq))
+    zipped = list(zip(nb_rankings, user_ratings, titles, genres, tf))
 
-    df = pd.DataFrame(zipped, columns=['NB_Ranking', 'User_Rating', 'Movie_Title', 'Genre', 'Document Frequency'])
+    df = pd.DataFrame(zipped, columns=['NB_Ranking', 'User_Rating', 'Movie_Title', 'Genre', 'Term Frequency'])
 
-    fig = px.scatter(df, x="NB_Ranking", y="User_Rating", color="Genre", size="Document Frequency", hover_name="Movie_Title", log_x=True, size_max=30)
+    fig = px.scatter(df, x="NB_Ranking", y="User_Rating", color="Genre", size="Term Frequency", hover_name="Movie_Title", log_x=True, size_max=30)
     fig.update_layout(
         yaxis=dict(
             title_text = "User Rating",
@@ -142,7 +142,7 @@ def compare():
     rankings_nb = []
     user_ratings = []
     genres = []
-    document_freq = []
+    tf = []
     for i in range (0, num_results):
         if bm25_rankings[i][1] > 0:
             rankings_bm25.append(bm25_rankings[i][1])
@@ -153,12 +153,12 @@ def compare():
             user_ratings.append(float(corpus[docid]['user_rating']))
             genre_dict = eval((corpus[docid]['genres']))
             genres.append(genre_dict[0]['name'])
-            document_freq.append(retrieve_doc_freq(query_term_stemmed, docid))
+            tf.append(retrieve_term_freq(query_term_stemmed, docid))
     length_range = range(0, num_results)
 
-    zipped = list(zip(rankings_bm25, rankings_nb, user_ratings, titles, genres, document_freq))
-    df = pd.DataFrame(zipped, columns=['BM25_Ranking', 'NB_Ranking', 'User_Rating', 'Movie_Title', 'Genre', 'Document Frequency'])
-    bm25_fig = px.scatter(df, x="BM25_Ranking", y="User_Rating", color="Genre", size="Document Frequency", hover_name="Movie_Title", log_x=True, size_max=30)
+    zipped = list(zip(rankings_bm25, rankings_nb, user_ratings, titles, genres, tf))
+    df = pd.DataFrame(zipped, columns=['BM25_Ranking', 'NB_Ranking', 'User_Rating', 'Movie_Title', 'Genre', 'Term Frequency'])
+    bm25_fig = px.scatter(df, x="BM25_Ranking", y="User_Rating", color="Genre", size="Term Frequency", hover_name="Movie_Title", log_x=True, size_max=30)
     bm25_fig.update_layout(
         yaxis=dict(
             title_text = "User Rating",
@@ -170,7 +170,7 @@ def compare():
     )
     bm25_graph_json = json.dumps(bm25_fig, cls=plotly.utils.PlotlyJSONEncoder)
 
-    nb_fig = px.scatter(df, x="NB_Ranking", y="User_Rating", color="Genre", size="Document Frequency", hover_name="Movie_Title", log_x=True, size_max=30)
+    nb_fig = px.scatter(df, x="NB_Ranking", y="User_Rating", color="Genre", size="Term Frequency", hover_name="Movie_Title", log_x=True, size_max=30)
     nb_fig.update_layout(
         yaxis=dict(
             title_text = "User Rating",
