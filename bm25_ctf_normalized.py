@@ -66,7 +66,7 @@ def tf_idf_score_with_ictf(k1, b, term, docid):
     # get collection term frequency by counting number of times term appears in collection
     collec_freq = doc_contents_lst.count(term)
 
-    # calculate td-idf score with ictf
+    # calculate tf-idf score with ictf
     ictf_comp = math.log((NUM_TERMS_FILTERED - collec_freq + 0.5)/(collec_freq+0.5))
     idf_comp = math.log((NUM_OF_DOCS - doc_freq + 0.5)/(doc_freq+0.5))
     ictf_idf_comp = ictf_comp*idf_comp
@@ -110,6 +110,11 @@ def retrieve_term_freq(query, docid):
     for term in query.split():
         total_tf+=(doc_contents[str(docid)].count(term))
     return (total_tf)
+
+print("term frequency")
+print(retrieve_term_freq("exist", 8871))
+print("collection term frequency")
+print(doc_contents_lst.count("exist"))
 
 # queryTerm = ""
 # while queryTerm != "ZZEND":

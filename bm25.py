@@ -58,7 +58,7 @@ def tf_idf_score(k1, b, term, docid):
     # get term frequency by counting number of times term appears in given doc
     term_freq = doc_contents[str(docid)].count(term)
 
-    # calculate td-idf score
+    # calculate tf-idf score
     idf_comp = math.log((NUM_OF_DOCS - doc_freq + 0.5)/(doc_freq+0.5))
     tf_comp = ((k1 + 1)*term_freq)/(k1*((1-b) + b*(len(list(filter(None, doc_contents[str(docid)])))/AVG_LEN_DOCS))+term_freq)
     return idf_comp * tf_comp

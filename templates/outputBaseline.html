@@ -11,7 +11,7 @@
         <button type="submit">Go Back</button>
     </form>
 
-    <h1>BM25-CTF-Normalized Search Results</h1>
+    <h1>CTF-BM25-Normalized Search Results</h1>
     <h3>Your Query: {{q}}</h3>
     <p><i>Hover over the points to view more details</i></p>
     <div id='bm_ctf_norm_chart' class='chart'”></div>
@@ -21,7 +21,7 @@
         <ul>
         {% for i in l %}
     
-        <li>BM25-CTF-Normalized Ranking: {{r[i]}} <br> Title: {{t[i]}} <br> Overview: {{o[i]}}</li> <br>
+        <li>CTF-BM25-Normalized Ranking: {{r[i]}} <br> Title: {{t[i]}} <br> Overview: {{o[i]}}</li> <br>
         {% endfor %}
         </ul>
     </div>
