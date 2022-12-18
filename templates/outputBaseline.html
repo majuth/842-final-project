@@ -3,29 +3,91 @@
 <head>
     <meta charset="UTF-8">
     <title>842 - Search Results</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
+
+        body{
+            font-family: lato;
+        }
+
+        #content{
+            width: 80%;
+            margin: auto;
+            padding-top: 10px;
+        }
+
+        .titleSubtext{
+            font-size: 0.5em;
+            font-weight: 400;
+        }
+
+        .purple{
+            color: purple;
+        }
+
+        h1{
+            line-height: 0;
+            font-size: 3em;
+        }
+
+        .goBack{
+            background-color: purple;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 5px;
+        }
+
+        .floatBack{
+            margin-left: 25px;
+            margin-top: 25px;
+            position: fixed;
+            width: 55px;
+        }
+
+        #content ul{
+            list-style: none;
+        }
+
+        .movieTitleText{
+            color: purple;
+            font-weight: 500;
+            font-size: 1.5em;
+        }
+
+        .rankings{
+            font-weight: 600;
+            font-size: 0.9em;
+        }
+    </style>
 </head>
 
 <body>
-    
+    <div class="floatBack">
     <form action="/" method="post">
-        <button type="submit">Go Back</button>
+        <button class="goBack" type="submit">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" class="bi bi-arrow-left" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+            </svg>
+        </button>
     </form>
-
-    <h1>CTF-BM25-Normalized Search Results</h1>
-    <h3>Your Query: {{q}}</h3>
-    <p><i>Hover over the points to view more details</i></p>
-    <div id='bm_ctf_norm_chart' class='chart'”></div>
-    <div id="output">
-        <h2>There are {{n}} results</h2>
-
-        <ul>
-        {% for i in l %}
-    
-        <li>CTF-BM25-Normalized Ranking: {{r[i]}} <br> Title: {{t[i]}} <br> Overview: {{o[i]}}</li> <br>
-        {% endfor %}
-        </ul>
     </div>
+    <div id="content">
+        <h1><span class="purple">{{q}}</span> <span class="titleSubtext">CTF-BM25-Normalized Search Results</span></h1>
+        <p><i>Hover over the points to view more details</i></p>
+        <div id='bm_ctf_norm_chart' class='chart'”></div>
+        <div id="output">
+            <h2>There are <span class="purple"> {{n}} </span> results</h2>
 
+            <ul>
+            {% for i in l %}
+        
+            <li><span class="movieTitleText"> {{t[i]}} </span> <br> Overview: {{o[i]}}   <br> <span class="rankings">CTF-BM25-Normalized Ranking: {{r[i]}}</span></li>
+            <br>
+            {% endfor %}
+            </ul>
+        </div>
+    </div>
 </body>
 
 <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
